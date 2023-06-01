@@ -13,6 +13,8 @@ type Iban struct {
 }
 
 var InvalidLength = errors.New("Invalid Iban account length")
+var InvalidRemainder = errors.New("Invalid Iban remainder")
+var LogicalError = errors.New("Unexpected error, can't process")
 
 var bigNintySeven = big.NewInt(97)
 var bigOne = big.NewInt(1)
