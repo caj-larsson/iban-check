@@ -1,7 +1,7 @@
 package main
 
 import (
-	"git.sg.caj.me/caj/iban-check/v2/iban"
+	"github.com/caj-larsson/iban-check/v2/iban"
 	"github.com/gin-gonic/gin"
 )
 

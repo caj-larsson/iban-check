@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"git.sg.caj.me/caj/iban-check/v2/iban"
+	"github.com/caj-larsson/iban-check/v2/iban"
 	"github.com/matryer/is"
 )
 
