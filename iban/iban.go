@@ -26,9 +26,12 @@ func asciiAlphaNumToNum(asciiNumbers []byte) ([]byte, error) {
 			// Already in ASCII
 			out = append(out, c)
 		} else if c >= 'A' && c <= 'Z' {
-			// TODO: refactor unclear code
-			asciiNum := strconv.Itoa(int(c -'A' + 10))
-			out = append(out, []byte(asciiNum)... )
+			// Convert the letter into a numerical value, then generate the
+			// string that represents the value in base 10. Finally append the
+			// ASCII code points.
+			numValue := int(c-'A') + 10
+			stringValue := strconv.Itoa(numValue)
+			out = append(out, []byte(stringValue)...)
 		} else {
 			fmt.Printf("Invalid character: %v\n", c)
 			return nil, InvalidCharacter
@@ -46,7 +49,13 @@ func (i *Iban) ValidationError() error {
 	if !i.validLength() {
 		return InvalidLength
 	}
-	if !i.validMod97() {
+
+	okRemainder, err := i.validMod97()
+	if err != nil {
+		return err
+	}
+
+	if !okRemainder {
 		return InvalidRemainder
 	}
 
@@ -64,19 +73,18 @@ func (i *Iban) validLength() bool {
 	return (nLetters > 4 && nLetters <= 34)
 }
 
-func (i *Iban) validMod97() bool {
+func (i *Iban) validMod97() (bool, error) {
 	var remainder = &big.Int{}
 	asNum, err := i.asNumber()
 
 	fmt.Printf("num %v, err %v", asNum, err)
 
 	if err != nil {
-		// TODO: refactor return to pass err correctly
-		return false
+		return false, err
 	}
 
 	remainder.Mod(asNum, bigNintySeven)
-	return remainder.Cmp(bigOne) == 0
+	return (remainder.Cmp(bigOne) == 0), nil
 }
 
 func (i *Iban) asNumber() (*big.Int, error) {
@@ -105,7 +113,6 @@ func (i *Iban) asNumber() (*big.Int, error) {
 		return nil, err
 	}
 	numberBuffer = append(numberBuffer, countryCode...)
-
 
 	remainderCorrection, err := asciiAlphaNumToNum(rawBytes[2:4])
 	if err != nil {
