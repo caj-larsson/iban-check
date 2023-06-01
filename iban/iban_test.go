@@ -14,7 +14,7 @@ func TestLength(t *testing.T) {
 	// TODO: refactor into table
 	is.True(iban.New("SE950").ValidationError() != iban.InvalidLength)
 	is.True(errors.Is(iban.New("SE01").ValidationError(), iban.InvalidLength))
-	is.True(errors.Is(iban.New("SE01"+ strings.Repeat("0", 31)).ValidationError(), iban.InvalidLength))
+	is.True(errors.Is(iban.New("SE01"+strings.Repeat("0", 31)).ValidationError(), iban.InvalidLength))
 }
 
 func TestModulo(t *testing.T) {
