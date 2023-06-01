@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"git.sg.caj.me/caj/iban-check/v2/iban"
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +17,7 @@ func main() {
 			Iban string `uri:"iban" binding:"required"`
 		}{}
 		c.ShouldBindUri(&form)
-		fmt.Printf("Requested Iban %v", form)
+
 		ibanValue := iban.New(form.Iban)
 
 		ibanError := ibanValue.ValidationError()

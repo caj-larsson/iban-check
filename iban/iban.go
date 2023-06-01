@@ -2,7 +2,6 @@ package iban
 
 import (
 	"errors"
-	"fmt"
 	"math/big"
 	"strconv"
 	"strings"
@@ -33,7 +32,6 @@ func asciiAlphaNumToNum(asciiNumbers []byte) ([]byte, error) {
 			stringValue := strconv.Itoa(numValue)
 			out = append(out, []byte(stringValue)...)
 		} else {
-			fmt.Printf("Invalid character: %v\n", c)
 			return nil, InvalidCharacter
 		}
 	}
@@ -77,8 +75,6 @@ func (i *Iban) validMod97() (bool, error) {
 	var remainder = &big.Int{}
 	asNum, err := i.asNumber()
 
-	fmt.Printf("num %v, err %v", asNum, err)
-
 	if err != nil {
 		return false, err
 	}
@@ -108,7 +104,7 @@ func (i *Iban) asNumber() (*big.Int, error) {
 	numberBuffer = append(numberBuffer, accountNumber...)
 
 	countryCode, err := asciiAlphaNumToNum(rawBytes[0:2])
-	fmt.Printf("countrycode converted %v\n ", string(countryCode))
+
 	if err != nil {
 		return nil, err
 	}
