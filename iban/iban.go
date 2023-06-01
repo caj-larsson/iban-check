@@ -95,8 +95,6 @@ func (i *Iban) asNumber() (*big.Int, error) {
 	rawBytes := []byte(i.raw)
 	numberBuffer := []byte{}
 
-	// TODO: refactor repetition to specialized append func
-
 	accountNumber, err := asciiAlphaNumToNum(rawBytes[4:])
 	if err != nil {
 		return nil, err
